@@ -33,7 +33,7 @@ pixels = img.load()
 imgX, imgY = img.size
 imgX, imgY = imgX-1, imgY-1
 
-checar = []
+checar = set()
 
 ##################################################################################################################
 #                                                                                                                #
@@ -52,19 +52,19 @@ t1 = time()
 
 for A in range(imgX+1):
 
-    if pixels[A, 0] == cor_esperada and (A, 0) not in checar:
-        checar.append((A, 0))
+    if pixels[A, 0] == cor_esperada:
+        checar.add((A, 0))
 
-    if pixels[A, imgY] == cor_esperada and (A, imgY) not in checar:
-        checar.append((A, imgY))
+    if pixels[A, imgY] == cor_esperada:
+        checar.add((A, imgY))
 
 for A in range(imgY+1):
 
-    if pixels[0, A] == cor_esperada and (0, A) not in checar:
-        checar.append((0, A))
+    if pixels[0, A] == cor_esperada:
+        checar.add((0, A))
 
-    if pixels[imgX, A] == cor_esperada and (imgX, A) not in checar:
-        checar.append((imgX, A))
+    if pixels[imgX, A] == cor_esperada:
+        checar.add((imgX, A))
 
 
 ###########################
@@ -76,7 +76,7 @@ for A in range(imgY+1):
 
 while len(checar) > 0:
 
-    px = checar[0]
+    px = checar.pop()
 
     if pixels[px[0], px[1]] == cor_alvo:
         checar.pop(0)
@@ -84,12 +84,11 @@ while len(checar) > 0:
 
     for A in pegar_lados(px, imgX, imgY):
 
-        if pixels[A[0], A[1]] == cor_esperada and (A[0], A[1]) not in checar:
-            checar.append((A[0], A[1]))
+        if pixels[A[0], A[1]] == cor_esperada:
+            checar.add((A[0], A[1]))
 
 
     pixels[px[0], px[1]] = cor_alvo
-    checar.pop(0)
     print(len(checar))
 
 t2 = time()
