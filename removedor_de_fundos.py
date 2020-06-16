@@ -89,7 +89,7 @@ while len(checar) > 0:
 
 
     pixels[px[0], px[1]] = cor_alvo
-    print(len(checar))
+    #print(len(checar))
 
 t2 = time()
 
