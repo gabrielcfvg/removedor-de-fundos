@@ -5,27 +5,38 @@ use image::{open, Rgba, ImageError};
 use std::collections::BTreeSet;
 use std::time::SystemTime;
 use std::io::Write;
+use std::env::args;
 
 fn main() {
     
     let mut entrada = String::new();
     
-    print!("caminho da imagem: ");
-    
-    let _ = std::io::stdout().flush();
-    std::io::stdin().read_line(&mut entrada).expect("erro ao ler entrada");
-    
-    let res: f64 = removedor_de_fundos(entrada.trim().to_string()).unwrap() as f64 / 1000.0;
+    if args().len() == 1 {
+        print!("caminho da imagem: ");
+        let _ = std::io::stdout().flush();
+        std::io::stdin().read_line(&mut entrada).expect("erro ao ler entrada");
+        entrada = entrada.trim().to_string();
 
+    }
+
+    else if args().len() == 2 {
+        entrada = args().collect::<Vec<String>>()[1].clone();
+
+    }
+    else {
+        panic!("Número de argumentos inválido!!!")
+    }
+
+
+    let res: f64 = removedor_de_fundos(&entrada).unwrap() as f64 / 1000.0;
     println!("Tempo de execução: {}ms", res);
-
     println!("Aperte enter para sair!");
     std::io::stdin().read_line(&mut entrada).unwrap();
 
 }
 
 
-fn removedor_de_fundos(path: String) -> Result<u128, ImageError> {
+fn removedor_de_fundos(path: &String) -> Result<u128, ImageError> {
 
     let tempo = SystemTime::now();
 
