@@ -28,19 +28,17 @@ fn main() {
     }
 
 
-    let res: f64 = removedor_de_fundos(&entrada).unwrap() as f64 / 1000.0;
-    println!("Tempo de execução: {}ms", res);
-    println!("Aperte enter para sair!");
-    std::io::stdin().read_line(&mut entrada).unwrap();
+    removedor_de_fundos(&entrada).unwrap();
 
 }
 
 
-fn removedor_de_fundos(path: &String) -> Result<u128, ImageError> {
-
-    let tempo = SystemTime::now();
+fn removedor_de_fundos(path: &String) -> Result<(), ImageError> {
 
     let mut img = open(path)?.to_rgba();
+
+    let tempo = std::time::Instant::now();
+
 
     let (mut img_x, mut img_y) = img.dimensions();
     img_x = img_x - 1;
@@ -84,12 +82,9 @@ fn removedor_de_fundos(path: &String) -> Result<u128, ImageError> {
 
     img.save("./saida.png")?;
 
-    match tempo.elapsed() {
+    println!("tempo de execução: {}ms", tempo.elapsed().as_millis());
 
-        Ok(elapsed) => return Ok(elapsed.as_millis()),
-        _ => panic!("erro ao retornar tempo de execução"),
-    }
-
+    Ok(())
 }
 
 fn pegar_lados(pos: (u32, u32), tamx: u32, tamy: u32) -> Vec<(u32, u32)> {
